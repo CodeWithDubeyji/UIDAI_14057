@@ -84,8 +84,8 @@ export default function LandingPage() {
         >
           {[
             { icon: Globe2, title: "Geospatial Analytics", desc: "Interactive drill-down from national to pincode level" },
-            { icon: BarChart3, title: "32 Metrics", desc: "Comprehensive indices for coverage, health, and anomalies" },
-            { icon: Shield, title: "Exclusion Risk Tracking", desc: "Identify underserved regions and vulnerable populations" },
+            { icon: BarChart3, title: "41 Endpoints", desc: "32 metrics + 9 ML-powered trend analysis endpoints" },
+            { icon: Shield, title: "Fraud Detection", desc: "ML-based anomaly detection and predictive forecasting" },
           ].map((feature, i) => (
             <div
               key={feature.title}
