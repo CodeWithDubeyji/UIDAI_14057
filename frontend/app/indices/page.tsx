@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { BarChart3, ArrowUpDown, ChevronUp, ChevronDown, Info } from "lucide-react";
 import { GlassCard, SectionTitle } from "@/components/GlassCard";
+import { SkeletonIndicesPage } from "@/components/Skeleton";
 import { api } from "@/lib/api";
 import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
@@ -58,6 +59,17 @@ export default function IndicesPage() {
         if (sortKey !== column) return <ArrowUpDown className="w-3 h-3 text-muted-foreground" />;
         return sortDir === "desc" ? <ChevronDown className="w-3 h-3 text-primary" /> : <ChevronUp className="w-3 h-3 text-primary" />;
     };
+
+    if (isLoading) {
+        return (
+            <>
+                <Navbar />
+                <div className="min-h-screen pt-20 px-6 pb-10 max-w-7xl mx-auto">
+                    <SkeletonIndicesPage />
+                </div>
+            </>
+        );
+    }
 
     return (
         <>
@@ -128,14 +140,14 @@ export default function IndicesPage() {
                                         <td className="py-3 px-4 text-muted-foreground">{d.state}</td>
                                         <td className="py-3 px-4 text-right">
                                             <span className={`px-2 py-1 rounded-md text-xs font-medium ${d.health_index >= 70 ? "bg-emerald-500/20 text-emerald-400" :
-                                                    d.health_index >= 40 ? "bg-amber-500/20 text-amber-400" : "bg-red-500/20 text-red-400"
+                                                d.health_index >= 40 ? "bg-amber-500/20 text-amber-400" : "bg-red-500/20 text-red-400"
                                                 }`}>
                                                 {d.health_index?.toFixed(1)}%
                                             </span>
                                         </td>
                                         <td className="py-3 px-4 text-right">
                                             <span className={`px-2 py-1 rounded-md text-xs font-medium ${d.exclusion_risk <= 30 ? "bg-emerald-500/20 text-emerald-400" :
-                                                    d.exclusion_risk <= 60 ? "bg-amber-500/20 text-amber-400" : "bg-red-500/20 text-red-400"
+                                                d.exclusion_risk <= 60 ? "bg-amber-500/20 text-amber-400" : "bg-red-500/20 text-red-400"
                                                 }`}>
                                                 {d.exclusion_risk?.toFixed(1)}%
                                             </span>

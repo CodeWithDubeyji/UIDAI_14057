@@ -11,7 +11,7 @@ export default function AboutPage() {
             <Navbar />
             <div className="min-h-screen pt-20 px-6 pb-10 max-w-4xl mx-auto">
                 {/* Header */}
-                <div className="text-center mb-12">
+                <div className="text-center mb-6">
                     <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl gradient-teal mb-6">
                         <Globe2 className="w-10 h-10 text-background" />
                     </div>
@@ -23,7 +23,7 @@ export default function AboutPage() {
                 </div>
 
                 {/* Features Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                     <GlassCard>
                         <MapPin className="w-8 h-8 text-primary mb-4" />
                         <h3 className="font-semibold text-lg mb-2">Geospatial Drill-Down</h3>

@@ -16,6 +16,7 @@ from routes.anomaly import router as anomaly_router
 from routes.composite import router as composite_router
 from routes.crazy_insights import router as crazy_insights_router
 from routes.trend_analyser import router as trend_analyser_router
+from routes.map_data import router as map_data_router
 
 app = FastAPI(
     title="Aadhaar Insight API",
@@ -41,6 +42,7 @@ app.include_router(anomaly_router)            # Metrics 21-25
 app.include_router(composite_router)          # Metrics 26-27
 app.include_router(crazy_insights_router)     # Metrics 28-32
 app.include_router(trend_analyser_router)     # ML-based Trend Analysis
+app.include_router(map_data_router)           # Map visualization data
 
 
 @app.on_event("startup")

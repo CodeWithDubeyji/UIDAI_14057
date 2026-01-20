@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { GitCompare, Search } from "lucide-react";
 import { GlassCard, SectionTitle } from "@/components/GlassCard";
+import { SkeletonComparePage } from "@/components/Skeleton";
 import { api } from "@/lib/api";
 import { Navbar } from "@/components/Navbar";
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer, Legend } from "recharts";
@@ -47,6 +48,19 @@ export default function ComparePage() {
         { metric: "100 - Risk", d1: 100 - d1Data.exclusion, d2: 100 - d2Data.exclusion },
         { metric: "100 - Stale", d1: 100 - d1Data.staleness, d2: 100 - d2Data.staleness },
     ];
+
+    const isLoading = !healthIndex?.data;
+
+    if (isLoading) {
+        return (
+            <>
+                <Navbar />
+                <div className="min-h-screen pt-20 px-6 pb-10 max-w-7xl mx-auto">
+                    <SkeletonComparePage />
+                </div>
+            </>
+        );
+    }
 
     return (
         <>

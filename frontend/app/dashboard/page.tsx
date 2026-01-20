@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { KPICard, METRIC_DESCRIPTIONS } from "@/components/KPICard";
 import { GlassCard, SectionTitle } from "@/components/GlassCard";
+import { SkeletonDashboardPage } from "@/components/Skeleton";
 import { api } from "@/lib/api";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -71,6 +72,12 @@ export default function NationalDashboard() {
         value: s[1] || 0
     })) || [];
 
+    const isLoading = loadingHealth && loadingRisk && loadingFresh;
+
+    if (isLoading) {
+        return <SkeletonDashboardPage />;
+    }
+
     return (
         <div className="space-y-6">
             {/* Header */}
@@ -119,19 +126,17 @@ export default function NationalDashboard() {
                     icon={MapPin}
                     color="teal"
                 />
-                
+
             </div>
 
             {/* Main Content Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Map Placeholder */}
-                <GlassCard className="lg:col-span-2 h-[500px] overflow-hidden">
-                    <div className="h-full">
-                        <IndiaMap
-                            data={mapData}
-                            metric="enrollments"
-                        />
-                    </div>
+                <GlassCard className="lg:col-span-2 h-[550px] overflow-hidden p-0">
+                    <IndiaMap
+                        mode="dashboard"
+                        height="500px"
+                    />
                 </GlassCard>
 
                 {/* Side Panel */}
@@ -170,7 +175,7 @@ export default function NationalDashboard() {
                                 <MapPin className="w-5 h-5 text-cyan-400" />
                                 <span className="text-sm">Cluster Analysis</span>
                             </Link>
-                           
+
                         </div>
                     </GlassCard>
                 </div>
