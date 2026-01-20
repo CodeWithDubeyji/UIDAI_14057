@@ -16,6 +16,7 @@ const navItems = [
     { href: "/anomalies", label: "Anomalies", icon: AlertTriangle },
     { href: "/compare", label: "Compare", icon: GitCompare },
     { href: "/about", label: "About", icon: Info },
+    { href: "/trends", label: "Trends", icon: TrendingUp },
 ];
 
 const metrics = [

@@ -119,6 +119,7 @@ export default function NationalDashboard() {
                     icon={MapPin}
                     color="teal"
                 />
+                
             </div>
 
             {/* Main Content Grid */}
@@ -169,6 +170,7 @@ export default function NationalDashboard() {
                                 <MapPin className="w-5 h-5 text-cyan-400" />
                                 <span className="text-sm">Cluster Analysis</span>
                             </Link>
+                           
                         </div>
                     </GlassCard>
                 </div>
