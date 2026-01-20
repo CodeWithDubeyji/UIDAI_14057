@@ -21,11 +21,14 @@ Thumbs.db
 # ===== Jupyter Notebooks =====
 .ipynb_checkpoints/
 
-# ===== Data Files (keep raw data out of git) =====
-data/
-*.csv
-*.parquet
-*.json
+# ===== Data Files (INCLUDED in git for complete backend) =====
+# Note: data/ folder is tracked for deployment
+# *.csv files in data/ are included
+# Uncomment below to exclude data if needed:
+# data/
+# *.csv
+# *.parquet
+# *.json
 
 # ===== Model Files =====
 *.pkl

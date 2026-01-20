@@ -3,12 +3,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { AlertTriangle, Zap, Ghost, Users, MapPin } from "lucide-react";
 import { GlassCard, SectionTitle } from "@/components/GlassCard";
+import { SkeletonAnomaliesPage } from "@/components/Skeleton";
 import { api } from "@/lib/api";
 import { Navbar } from "@/components/Navbar";
 import Link from "next/link";
 
 export default function AnomaliesPage() {
-    const { data: mirage } = useQuery({ queryKey: ["mirage"], queryFn: api.enrollmentMirage });
+    const { data: mirage, isLoading: loadingMirage } = useQuery({ queryKey: ["mirage"], queryFn: api.enrollmentMirage });
     const { data: phantom } = useQuery({ queryKey: ["phantom"], queryFn: api.phantomChildren });
     const { data: ghosts } = useQuery({ queryKey: ["ghosts"], queryFn: api.ghostTowns });
     const { data: zscore } = useQuery({ queryKey: ["zscore"], queryFn: api.enrollmentZscore });
@@ -20,6 +21,17 @@ export default function AnomaliesPage() {
         { key: "ghosts", icon: Ghost, title: "Ghost Towns", count: ghosts?.count || 0, color: "text-red-400", desc: "Pincodes with no activity for 2+ years" },
         { key: "zscore", icon: AlertTriangle, title: "Z-Score Outliers", count: zscore?.data?.length || 0, color: "text-cyan-400", desc: "Enrollment counts significantly different from district average" },
     ];
+
+    if (loadingMirage) {
+        return (
+            <>
+                <Navbar />
+                <div className="min-h-screen pt-20 px-6 pb-10 max-w-7xl mx-auto">
+                    <SkeletonAnomaliesPage />
+                </div>
+            </>
+        );
+    }
 
     return (
         <>

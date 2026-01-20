@@ -4,9 +4,21 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Globe2, Layers } from "lucide-react";
 import { GlassCard, SectionTitle } from "@/components/GlassCard";
+import { SkeletonClustersPage } from "@/components/Skeleton";
 import { api } from "@/lib/api";
 import { Navbar } from "@/components/Navbar";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+
+// Dynamic import for map component (Leaflet requires browser APIs)
+const IndiaMap = dynamic(() => import("@/components/IndiaMap"), {
+    ssr: false,
+    loading: () => (
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="animate-pulse text-muted-foreground">Loading map...</div>
+        </div>
+    ),
+});
 
 const CLUSTER_COLORS = {
     0: { bg: "bg-emerald-500/20", text: "text-emerald-400", name: "High Performers" },
@@ -35,6 +47,19 @@ export default function ClustersPage() {
     const description = clusterType === "cold"
         ? "DBSCAN clusters of low-enrollment pincodes"
         : "KMeans clusters of high-update activity pincodes";
+
+    const isLoading = (clusterType === "cold" && loadingCold) || (clusterType === "hot" && loadingHot);
+
+    if (isLoading) {
+        return (
+            <>
+                <Navbar />
+                <div className="min-h-screen pt-20 px-6 pb-10 max-w-7xl mx-auto">
+                    <SkeletonClustersPage />
+                </div>
+            </>
+        );
+    }
 
     return (
         <>
@@ -91,16 +116,13 @@ export default function ClustersPage() {
                         </div>
                     </GlassCard>
 
-                    {/* Map Placeholder */}
-                    <GlassCard className="lg:col-span-2 h-[500px] flex items-center justify-center">
-                        <div className="text-center">
-                            <Layers className="w-16 h-16 text-primary mx-auto mb-4" />
-                            <h3 className="text-lg font-semibold mb-2">Cluster Visualization</h3>
-                            <p className="text-muted-foreground text-sm max-w-md">
-                                Map highlighting districts by cluster assignment.
-                                {selectedCluster !== null && ` Showing Cluster ${selectedCluster}`}
-                            </p>
-                        </div>
+                    {/* Map with Cluster Visualization */}
+                    <GlassCard className="lg:col-span-2 h-[500px] overflow-hidden p-0">
+                        <IndiaMap
+                            mode="clusters"
+                            clusterType={clusterType}
+                            height="500px"
+                        />
                     </GlassCard>
 
                     {/* Cluster Details */}

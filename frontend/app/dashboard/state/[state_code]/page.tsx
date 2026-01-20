@@ -9,6 +9,17 @@ import { KPICard } from "@/components/KPICard";
 import { GlassCard, SectionTitle } from "@/components/GlassCard";
 import { api } from "@/lib/api";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import dynamic from "next/dynamic";
+
+// Dynamic import for map component (Leaflet requires browser APIs)
+const IndiaMap = dynamic(() => import("@/components/IndiaMap"), {
+    ssr: false,
+    loading: () => (
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="animate-pulse text-muted-foreground">Loading map...</div>
+        </div>
+    ),
+});
 
 export default function StateView() {
     const params = useParams();
@@ -45,6 +56,13 @@ export default function StateView() {
         name: d.district?.substring(0, 15) || "Unknown",
         health: d.health_index || 0,
         risk: stateRisk.find((r: any) => r.district === d.district)?.exclusion_risk || 0
+    }));
+
+
+    // Map data for district visualization
+    const districtMapData = stateHealth.map((d: any) => ({
+        name: d.district || "",
+        value: d.health_index || 0,
     }));
 
     return (
@@ -92,23 +110,16 @@ export default function StateView() {
 
             {/* Main Content */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Map Placeholder */}
-                <GlassCard className="lg:col-span-2 h-[450px] flex items-center justify-center">
-                    <div className="text-center">
-                        <MapPin className="w-16 h-16 text-primary mx-auto mb-4" />
-                        <h3 className="text-lg font-semibold mb-2">District Map - {stateCode}</h3>
-                        <p className="text-muted-foreground text-sm">Click on a district to view pincode details</p>
-                        <div className="mt-6 flex flex-wrap gap-2 justify-center max-w-lg">
-                            {stateHealth.slice(0, 8).map((d: any) => (
-                                <Link
-                                    key={d.district}
-                                    href={`/dashboard/district/${encodeURIComponent(d.district)}`}
-                                    className="px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-sm hover:bg-primary/20"
-                                >
-                                    {d.district}
-                                </Link>
-                            ))}
-                        </div>
+                {/* State Map */}
+                <GlassCard className="lg:col-span-2 h-[450px] overflow-hidden">
+                    <div className="h-full">
+                        <IndiaMap
+                            data={districtMapData}
+                            metric="health_index"
+                            mode="state"
+                            stateName={stateCode}
+                            showDistricts={true}
+                        />
                     </div>
                 </GlassCard>
 

@@ -10,13 +10,15 @@ import {
     GitCompare,
     Info,
     Menu,
-    X
+    X,
+    TrendingUp
 } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/trends", label: "Trends", icon: TrendingUp },
     { href: "/indices", label: "Indices", icon: BarChart3 },
     { href: "/clusters", label: "Clusters", icon: Globe2 },
     { href: "/anomalies", label: "Anomalies", icon: AlertTriangle },

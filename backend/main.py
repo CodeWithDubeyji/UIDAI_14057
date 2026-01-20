@@ -15,6 +15,8 @@ from routes.temporal import router as temporal_router
 from routes.anomaly import router as anomaly_router
 from routes.composite import router as composite_router
 from routes.crazy_insights import router as crazy_insights_router
+from routes.trend_analyser import router as trend_analyser_router
+from routes.map_data import router as map_data_router
 
 app = FastAPI(
     title="Aadhaar Insight API",
@@ -39,6 +41,8 @@ app.include_router(temporal_router)           # Metrics 16-20
 app.include_router(anomaly_router)            # Metrics 21-25
 app.include_router(composite_router)          # Metrics 26-27
 app.include_router(crazy_insights_router)     # Metrics 28-32
+app.include_router(trend_analyser_router)     # ML-based Trend Analysis
+app.include_router(map_data_router)           # Map visualization data
 
 
 @app.on_event("startup")
@@ -50,14 +54,19 @@ def startup():
 @app.get("/")
 def home():
     """Health check endpoint"""
-    return {"status": "Aadhaar DuckDB API Running", "endpoints": 32}
+    return {
+        "status": "Aadhaar Complete Backend API Running", 
+        "core_endpoints": 32,
+        "trend_analysis_endpoints": 9,
+        "total_endpoints": 41
+    }
 
 
 @app.get("/metrics")
 def list_all_metrics():
     """List all available metrics endpoints"""
     return {
-        "total_endpoints": 32,
+        "total_endpoints": 41,
         "categories": {
             "data_insights": [
                 "/metrics/enrollment-deficit-ratio",
@@ -104,6 +113,16 @@ def list_all_metrics():
                 "/metrics/phantom-children",
                 "/metrics/district-twins",
                 "/metrics/pincode-ghost-towns"
+            ],
+            "trend_analysis": [
+                "/api/trends/summary",
+                "/api/trends/forecast",
+                "/api/trends/enrollment-by-age",
+                "/api/trends/state-performance",
+                "/api/trends/bottleneck-districts",
+                "/api/trends/daily-volume",
+                "/api/trends/high-volume-pincodes",
+                "/api/trends/fraud/anomalies"
             ]
         }
     }
