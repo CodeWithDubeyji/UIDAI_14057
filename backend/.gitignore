@@ -1,0 +1,56 @@
+# ===== Python Bytecode =====
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ===== Virtual Environment =====
+venv/
+env/
+.venv/
+
+# ===== Environment Variables =====
+.env
+
+# ===== OS Files =====
+.DS_Store
+Thumbs.db
+
+# ===== Logs =====
+*.log
+
+# ===== Jupyter Notebooks =====
+.ipynb_checkpoints/
+
+# ===== Data Files (keep raw data out of git) =====
+data/
+*.csv
+*.parquet
+*.json
+
+# ===== Model Files =====
+*.pkl
+*.joblib
+
+# ===== FastAPI / Uvicorn =====
+*.pid
+
+# ===== Streamlit Cache =====
+.streamlit/
+
+# ===== Node / Frontend (if using Next.js) =====
+node_modules/
+.next/
+out/
+
+# ===== IDE Settings =====
+.vscode/
+.idea/
+
+# ===== Coverage / Test =====
+.coverage
+pytest_cache/
+
+# ===== Build Artifacts =====
+dist/
+build/
+*.egg-info/
