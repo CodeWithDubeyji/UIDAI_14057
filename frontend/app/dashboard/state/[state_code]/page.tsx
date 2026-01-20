@@ -10,9 +10,19 @@ import { GlassCard, SectionTitle } from "@/components/GlassCard";
 import { api } from "@/lib/api";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import dynamic from "next/dynamic";
+import type { ComponentType } from "react";
+
+// Props interface for IndiaMap
+interface IndiaMapProps {
+    mode?: "dashboard" | "clusters";
+    clusterType?: "cold" | "hot";
+    height?: string;
+    onStateClick?: (state: string) => void;
+    onDistrictClick?: (district: string) => void;
+}
 
 // Dynamic import for map component (Leaflet requires browser APIs)
-const IndiaMap = dynamic(() => import("@/components/IndiaMap"), {
+const IndiaMap = dynamic<IndiaMapProps>(() => import("@/components/IndiaMap").then(mod => mod.default as ComponentType<IndiaMapProps>), {
     ssr: false,
     loading: () => (
         <div className="w-full h-full flex items-center justify-center">
@@ -111,16 +121,11 @@ export default function StateView() {
             {/* Main Content */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* State Map */}
-                <GlassCard className="lg:col-span-2 h-[450px] overflow-hidden">
-                    <div className="h-full">
-                        <IndiaMap
-                            data={districtMapData}
-                            metric="health_index"
-                            mode="state"
-                            stateName={stateCode}
-                            showDistricts={true}
-                        />
-                    </div>
+                <GlassCard className="lg:col-span-2 h-[550px] overflow-hidden p-0">
+                    <IndiaMap
+                        mode="dashboard"
+                        height="550px"
+                    />
                 </GlassCard>
 
                 {/* District Chart */}
