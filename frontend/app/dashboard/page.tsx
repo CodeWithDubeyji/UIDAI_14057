@@ -10,9 +10,20 @@ import { KPICard, METRIC_DESCRIPTIONS } from "@/components/KPICard";
 import { GlassCard, SectionTitle } from "@/components/GlassCard";
 import { api } from "@/lib/api";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import {
     BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
 } from "recharts";
+
+// Dynamic import for map component (Leaflet requires browser APIs)
+const IndiaMap = dynamic(() => import("@/components/IndiaMap"), {
+    ssr: false,
+    loading: () => (
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="animate-pulse text-muted-foreground">Loading map...</div>
+        </div>
+    ),
+});
 
 export default function NationalDashboard() {
     const { data: healthIndex, isLoading: loadingHealth } = useQuery({
@@ -54,6 +65,12 @@ export default function NationalDashboard() {
         value: s[1] || 0
     })) || [];
 
+    // Map data for choropleth
+    const mapData = stateData?.map((s: any[]) => ({
+        name: s[0] || "",
+        value: s[1] || 0
+    })) || [];
+
     return (
         <div className="space-y-6">
             {/* Header */}
@@ -64,7 +81,7 @@ export default function NationalDashboard() {
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Clock className="w-4 h-4" />
-                    Last updated: {new Date().toLocaleDateString()}
+                    Last updated: {new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
                 </div>
             </div>
 
@@ -107,27 +124,12 @@ export default function NationalDashboard() {
             {/* Main Content Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Map Placeholder */}
-                <GlassCard className="lg:col-span-2 h-[500px] flex items-center justify-center">
-                    <div className="text-center">
-                        <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-                            <MapPin className="w-12 h-12 text-primary" />
-                        </div>
-                        <h3 className="text-lg font-semibold mb-2">India Choropleth Map</h3>
-                        <p className="text-muted-foreground text-sm max-w-md">
-                            Interactive map visualization showing state-wise metrics.
-                            Click on any state to drill down to district level.
-                        </p>
-                        <div className="mt-6 flex flex-wrap gap-2 justify-center">
-                            {["Maharashtra", "Uttar Pradesh", "Karnataka", "Tamil Nadu", "Gujarat"].map((state) => (
-                                <Link
-                                    key={state}
-                                    href={`/dashboard/state/${state.toLowerCase().replace(" ", "-")}`}
-                                    className="px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-sm hover:bg-primary/20 transition-colors"
-                                >
-                                    {state}
-                                </Link>
-                            ))}
-                        </div>
+                <GlassCard className="lg:col-span-2 h-[500px] overflow-hidden">
+                    <div className="h-full">
+                        <IndiaMap
+                            data={mapData}
+                            metric="enrollments"
+                        />
                     </div>
                 </GlassCard>
 
