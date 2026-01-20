@@ -64,4 +64,14 @@ export const api = {
     // General
     allMetrics: () => fetchAPI<any>("/metrics"),
     enrollmentsByState: () => fetchAPI<any>("/enrollments_by_state"),
+
+    // Trend Analysis (ML-based)
+    trendSummary: () => fetchAPI<any>("/api/trends/summary"),
+    trendForecast: () => fetchAPI<any>("/api/trends/forecast"),
+    enrollmentByAge: () => fetchAPI<any>("/api/trends/enrollment-by-age"),
+    statePerformance: () => fetchAPI<any>("/api/trends/state-performance"),
+    bottleneckDistricts: () => fetchAPI<any>("/api/trends/bottleneck-districts"),
+    dailyVolume: () => fetchAPI<any>("/api/trends/daily-volume"),
+    highVolumePincodes: () => fetchAPI<any>("/api/trends/high-volume-pincodes"),
+    fraudAnomalies: () => fetchAPI<any>("/api/trends/fraud/anomalies"),
 };
